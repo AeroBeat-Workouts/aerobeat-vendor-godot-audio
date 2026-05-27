@@ -1,7 +1,7 @@
 class_name AeroGodotAudioBackendFactory
 extends RefCounted
 
-const VERSION: String = "0.2.0"
+const VERSION: String = "0.3.0"
 const BACKEND_SCRIPT := preload("AeroGodotAudioBackend.gd")
 const MANAGER_SCRIPT := preload("AeroAudioPlaybackManager.gd")
 
@@ -13,5 +13,8 @@ func create_backend(player_factory: Callable = Callable()) -> AeroGodotAudioBack
 
 func create_manager(player_factory: Callable = Callable()) -> AeroAudioPlaybackManager:
 	var manager := MANAGER_SCRIPT.new()
+	manager.set_backend_factory(func():
+		return create_backend(player_factory)
+	)
 	manager.set_backend(create_backend(player_factory))
 	return manager

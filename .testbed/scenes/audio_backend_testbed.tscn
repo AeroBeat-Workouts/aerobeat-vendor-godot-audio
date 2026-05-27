@@ -29,88 +29,117 @@ theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
-text = "AeroGodotAudioBackend proving surface"
+text = "AeroGodotAudioBackend multi-slot proving surface"
 
-[node name="PathLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="GlobalResultLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load/play each slot independently."
+
+[node name="SlotsRow" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="LeftPanel" type="PanelContainer" parent="MarginContainer/VBox/SlotsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LeftVBox" type="VBoxContainer" parent="MarginContainer/VBox/SlotsRow/LeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LeftTitleLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
+layout_mode = 2
+text = "Left slot"
+
+[node name="LeftPathLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "res://assets/audio/test-tone.ogg"
 
-[node name="StatusLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="LeftStatusLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "State: idle"
+text = "Left state: idle"
 
-[node name="DetailLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="LeftDetailLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Position: 0.0 / 0.0 | Volume: 0.0 dB"
+text = "Position: 0.0 / 0.0 | Volume: 0.0 dB | Loop: off"
+autowrap_mode = 3
 
-[node name="ResultLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="LeftResultLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Pick a file or load a sample."
+autowrap_mode = 3
 
-[node name="PlayerHost" type="Node" parent="MarginContainer/VBox"]
+[node name="LeftPlayerHost" type="Node" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 unique_name_in_owner = true
 
-[node name="SelectRow" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="LeftSelectRow" type="HBoxContainer" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 8
 
-[node name="ChooseFileButton" type="Button" parent="MarginContainer/VBox/SelectRow"]
+[node name="LeftChooseFileButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftSelectRow"]
 layout_mode = 2
 text = "Choose file…"
 
-[node name="UseSampleOggButton" type="Button" parent="MarginContainer/VBox/SelectRow"]
+[node name="LeftUseSampleOggButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftSelectRow"]
 layout_mode = 2
-text = "Use sample OGG"
+text = "Use OGG"
 
-[node name="UseSampleWavButton" type="Button" parent="MarginContainer/VBox/SelectRow"]
+[node name="LeftUseSampleWavButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftSelectRow"]
 layout_mode = 2
-text = "Use sample WAV"
+text = "Use WAV"
 
-[node name="ControlsRow" type="HBoxContainer" parent="MarginContainer/VBox"]
+[node name="LeftControlsRow" type="HBoxContainer" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 8
 
-[node name="LoadButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+[node name="LeftLoadButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow"]
 layout_mode = 2
 text = "Load"
 
-[node name="PlayButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+[node name="LeftPlayButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow"]
 layout_mode = 2
 text = "Play"
 
-[node name="PauseButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+[node name="LeftPauseButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow"]
 layout_mode = 2
 text = "Pause"
 
-[node name="ResumeButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+[node name="LeftResumeButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow"]
 layout_mode = 2
 text = "Resume"
 
-[node name="StopButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+[node name="LeftStopButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow"]
 layout_mode = 2
 text = "Stop"
 
-[node name="UnloadButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+[node name="LeftUnloadButton" type="Button" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow"]
 layout_mode = 2
 text = "Unload"
 
-[node name="SliderLabel" type="Label" parent="MarginContainer/VBox"]
+[node name="LeftLoopCheckBox" type="CheckBox" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Seek 0.00s | Volume 0.0 dB"
+text = "Loop enabled"
 
-[node name="SeekSlider" type="HSlider" parent="MarginContainer/VBox"]
+[node name="LeftSliderLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Seek 0.00s | Volume 0.0 dB | Loop off"
+
+[node name="LeftSeekSlider" type="HSlider" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 max_value = 1.0
 step = 0.01
 
-[node name="VolumeSlider" type="HSlider" parent="MarginContainer/VBox"]
+[node name="LeftVolumeSlider" type="HSlider" parent="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
@@ -119,23 +148,152 @@ max_value = 6.0
 step = 0.5
 value = 0.0
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBox/SlotsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightVBox" type="VBoxContainer" parent="MarginContainer/VBox/SlotsRow/RightPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RightTitleLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+layout_mode = 2
+text = "Right slot"
+
+[node name="RightPathLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
 unique_name_in_owner = true
-title = "Choose .ogg or .wav file"
+layout_mode = 2
+text = "res://assets/audio/test-tone.wav"
+
+[node name="RightStatusLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Right state: idle"
+
+[node name="RightDetailLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Position: 0.0 / 0.0 | Volume: 0.0 dB | Loop: off"
+autowrap_mode = 3
+
+[node name="RightResultLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pick a file or load a sample."
+autowrap_mode = 3
+
+[node name="RightPlayerHost" type="Node" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+unique_name_in_owner = true
+
+[node name="RightSelectRow" type="HBoxContainer" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RightChooseFileButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightSelectRow"]
+layout_mode = 2
+text = "Choose file…"
+
+[node name="RightUseSampleOggButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightSelectRow"]
+layout_mode = 2
+text = "Use OGG"
+
+[node name="RightUseSampleWavButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightSelectRow"]
+layout_mode = 2
+text = "Use WAV"
+
+[node name="RightControlsRow" type="HBoxContainer" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RightLoadButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow"]
+layout_mode = 2
+text = "Load"
+
+[node name="RightPlayButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow"]
+layout_mode = 2
+text = "Play"
+
+[node name="RightPauseButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow"]
+layout_mode = 2
+text = "Pause"
+
+[node name="RightResumeButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow"]
+layout_mode = 2
+text = "Resume"
+
+[node name="RightStopButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow"]
+layout_mode = 2
+text = "Stop"
+
+[node name="RightUnloadButton" type="Button" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow"]
+layout_mode = 2
+text = "Unload"
+
+[node name="RightLoopCheckBox" type="CheckBox" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Loop enabled"
+
+[node name="RightSliderLabel" type="Label" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Seek 0.00s | Volume 0.0 dB | Loop off"
+
+[node name="RightSeekSlider" type="HSlider" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="RightVolumeSlider" type="HSlider" parent="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+min_value = -48.0
+max_value = 6.0
+step = 0.5
+value = 0.0
+
+[node name="LeftFileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Choose left-slot .ogg or .wav file"
 file_mode = 0
 access = 2
 use_native_dialog = true
 
-[connection signal="pressed" from="MarginContainer/VBox/SelectRow/ChooseFileButton" to="." method="_on_choose_file_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBox/SelectRow/UseSampleOggButton" to="." method="_on_use_sample_ogg_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBox/SelectRow/UseSampleWavButton" to="." method="_on_use_sample_wav_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/LoadButton" to="." method="_on_load_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/PauseButton" to="." method="_on_pause_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/ResumeButton" to="." method="_on_resume_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/StopButton" to="." method="_on_stop_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/UnloadButton" to="." method="_on_unload_button_pressed"]
-[connection signal="drag_started" from="MarginContainer/VBox/SeekSlider" to="." method="_on_seek_slider_drag_started"]
-[connection signal="drag_ended" from="MarginContainer/VBox/SeekSlider" to="." method="_on_seek_slider_drag_ended"]
-[connection signal="value_changed" from="MarginContainer/VBox/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
-[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[node name="RightFileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Choose right-slot .ogg or .wav file"
+file_mode = 0
+access = 2
+use_native_dialog = true
+
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftSelectRow/LeftChooseFileButton" to="." method="_on_left_choose_file_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftSelectRow/LeftUseSampleOggButton" to="." method="_on_left_use_sample_ogg_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftSelectRow/LeftUseSampleWavButton" to="." method="_on_left_use_sample_wav_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow/LeftLoadButton" to="." method="_on_left_load_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow/LeftPlayButton" to="." method="_on_left_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow/LeftPauseButton" to="." method="_on_left_pause_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow/LeftResumeButton" to="." method="_on_left_resume_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow/LeftStopButton" to="." method="_on_left_stop_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftControlsRow/LeftUnloadButton" to="." method="_on_left_unload_button_pressed"]
+[connection signal="toggled" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftLoopCheckBox" to="." method="_on_left_loop_check_box_toggled"]
+[connection signal="drag_started" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftSeekSlider" to="." method="_on_left_seek_slider_drag_started"]
+[connection signal="drag_ended" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftSeekSlider" to="." method="_on_left_seek_slider_drag_ended"]
+[connection signal="value_changed" from="MarginContainer/VBox/SlotsRow/LeftPanel/LeftVBox/LeftVolumeSlider" to="." method="_on_left_volume_slider_value_changed"]
+[connection signal="file_selected" from="LeftFileDialog" to="." method="_on_left_file_dialog_file_selected"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightSelectRow/RightChooseFileButton" to="." method="_on_right_choose_file_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightSelectRow/RightUseSampleOggButton" to="." method="_on_right_use_sample_ogg_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightSelectRow/RightUseSampleWavButton" to="." method="_on_right_use_sample_wav_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow/RightLoadButton" to="." method="_on_right_load_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow/RightPlayButton" to="." method="_on_right_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow/RightPauseButton" to="." method="_on_right_pause_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow/RightResumeButton" to="." method="_on_right_resume_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow/RightStopButton" to="." method="_on_right_stop_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightControlsRow/RightUnloadButton" to="." method="_on_right_unload_button_pressed"]
+[connection signal="toggled" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightLoopCheckBox" to="." method="_on_right_loop_check_box_toggled"]
+[connection signal="drag_started" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightSeekSlider" to="." method="_on_right_seek_slider_drag_started"]
+[connection signal="drag_ended" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightSeekSlider" to="." method="_on_right_seek_slider_drag_ended"]
+[connection signal="value_changed" from="MarginContainer/VBox/SlotsRow/RightPanel/RightVBox/RightVolumeSlider" to="." method="_on_right_volume_slider_value_changed"]
+[connection signal="file_selected" from="RightFileDialog" to="." method="_on_right_file_dialog_file_selected"]

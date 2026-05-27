@@ -7,6 +7,8 @@ const SOURCE_KIND_FILE := CoreContract.SOURCE_KIND_FILE
 const SOURCE_KIND_PACKAGE := CoreContract.SOURCE_KIND_PACKAGE
 const SUPPORTED_SOURCE_KINDS := [SOURCE_KIND_FILE, SOURCE_KIND_PACKAGE]
 const VERIFIED_EXTENSIONS := ["ogg", "wav"]
+const STREAM_LOOP_MODE_DISABLED := 0
+const STREAM_LOOP_MODE_FORWARD := 1
 
 const STATE_IDLE := "idle"
 const STATE_ATTACHED := "attached"
@@ -26,6 +28,7 @@ var _vendor_state: String = STATE_IDLE
 var _position_seconds: float = 0.0
 var _duration_seconds: float = 0.0
 var _volume_db: float = 0.0
+var _loop_enabled: bool = false
 var _finished_connected: bool = false
 
 func set_player_factory(factory: Callable) -> void:
@@ -65,8 +68,8 @@ func get_capabilities() -> Dictionary:
 		"remote_sources_supported": false,
 		"surface_attach_mode": "direct_or_container_child",
 		"surface_types": ["AudioStreamPlayer", "Node"],
-		"controls": ["load", "unload", "play", "pause", "resume", "stop", "volume_db", "seek"],
-		"metadata_known_fields": ["path", "kind", "vendor", "backend_family", "extension", "locality", "duration", "position", "surface_attached", "volume_db"],
+		"controls": ["load", "unload", "play", "pause", "resume", "stop", "volume_db", "loop", "seek"],
+		"metadata_known_fields": ["path", "kind", "vendor", "backend_family", "extension", "locality", "duration", "position", "surface_attached", "volume_db", "loop"],
 	}
 
 func load(source: Dictionary) -> Dictionary:
@@ -91,6 +94,7 @@ func load(source: Dictionary) -> Dictionary:
 	_loaded_source = normalized.duplicate(true)
 	_position_seconds = maxf(0.0, float(_loaded_source.get("start_time", 0.0)))
 	_volume_db = float(_loaded_source.get("volume_db", 0.0))
+	_loop_enabled = bool(_loaded_source.get("loop", false))
 	_duration_seconds = _resolve_duration_seconds(_stream_resource, normalized)
 	_media_info = _build_media_info(_loaded_source)
 	_sync_player_configuration()
@@ -111,6 +115,7 @@ func unload() -> Dictionary:
 	_last_error = {}
 	_position_seconds = 0.0
 	_duration_seconds = 0.0
+	_loop_enabled = false
 	_vendor_state = STATE_ATTACHED if _surface != null else STATE_IDLE
 	if _player != null:
 		_set_player_property("stream", null)
@@ -172,10 +177,18 @@ func set_volume_db(volume_db: float) -> Dictionary:
 	_last_error = {}
 	return _ok({"volume_db": _volume_db, "applied_to_player": applied_to_player})
 
+func set_loop(enabled: bool) -> Dictionary:
+	_loop_enabled = enabled
+	if not _loaded_source.is_empty():
+		_loaded_source["loop"] = enabled
+	_sync_stream_loop_configuration()
+	_last_error = {}
+	return _ok({"loop": _loop_enabled})
+
 func seek(seconds: float) -> Dictionary:
 	if _loaded_source.is_empty():
 		return _fail("backend_not_loaded", "Cannot seek before a source is loaded.")
-	var max_position := maxf(seconds, 0.0)
+	var max_position := maxf(0.0, seconds)
 	if _duration_seconds > 0.0:
 		max_position = _duration_seconds
 	_position_seconds = clampf(seconds, 0.0, max_position)
@@ -267,6 +280,7 @@ func translate_backend_state(raw_state: Dictionary = {}) -> Dictionary:
 		"position": _position_seconds,
 		"duration": _duration_seconds,
 		"volume_db": _volume_db,
+		"loop": _loop_enabled,
 		"last_error": _last_error.duplicate(true),
 		"source": _loaded_source.duplicate(true),
 		"raw": raw_state.duplicate(true),
@@ -317,6 +331,7 @@ func _build_media_info(source: Dictionary) -> Dictionary:
 		"position": _position_seconds,
 		"surface_attached": _surface != null,
 		"volume_db": _volume_db,
+		"loop": _loop_enabled,
 		"metadata": source.get("metadata", {}).duplicate(true),
 	}
 
@@ -384,10 +399,21 @@ func _sync_player_configuration() -> void:
 		return
 	if _stream_resource != null:
 		_set_player_property("stream", _stream_resource)
+	_sync_stream_loop_configuration()
 	_set_player_property("volume_db", _volume_db)
 	_set_player_property("stream_paused", _vendor_state == STATE_PAUSED)
 	if _player.has_method("set") and _loaded_source.has("autoplay"):
 		_set_player_property("autoplay", bool(_loaded_source.get("autoplay", false)))
+
+func _sync_stream_loop_configuration() -> void:
+	if _stream_resource == null:
+		return
+	if _object_supports_property(_stream_resource, "loop"):
+		_stream_resource.set("loop", _loop_enabled)
+	if _object_supports_property(_stream_resource, "loop_mode"):
+		_stream_resource.set("loop_mode", STREAM_LOOP_MODE_FORWARD if _loop_enabled else STREAM_LOOP_MODE_DISABLED)
+	if _object_supports_property(_stream_resource, "loop_end") and _loop_enabled and int(_stream_resource.get("loop_end")) < 0 and _duration_seconds > 0.0:
+		_stream_resource.set("loop_end", int(ceili(_duration_seconds)))
 
 func _connect_finished_signal() -> void:
 	if _player == null or _finished_connected:
@@ -403,6 +429,7 @@ func _snapshot_player_state() -> Dictionary:
 		"position": _position_seconds,
 		"duration": _duration_seconds,
 		"volume_db": _volume_db,
+		"loop": _loop_enabled,
 	}
 	if _player != null:
 		if _player.has_method("get_playback_position"):
@@ -444,6 +471,13 @@ func _is_player_playing() -> bool:
 	return _vendor_state == STATE_PLAYING
 
 func _on_player_finished() -> void:
+	if _loop_enabled and not _loaded_source.is_empty():
+		_position_seconds = 0.0
+		_vendor_state = STATE_PLAYING
+		if _player != null and _player.has_method("play"):
+			_player.call("play", 0.0)
+		_set_player_property("stream_paused", false)
+		return
 	_position_seconds = _duration_seconds
 	_vendor_state = STATE_READY
 

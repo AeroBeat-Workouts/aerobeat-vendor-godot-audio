@@ -24,6 +24,9 @@ func stop() -> Dictionary:
 func set_volume_db(_volume_db: float) -> Dictionary:
 	return _unsupported("set_volume_db")
 
+func set_loop(_enabled: bool) -> Dictionary:
+	return _unsupported("set_loop")
+
 func seek(_seconds: float) -> Dictionary:
 	return _unsupported("seek")
 

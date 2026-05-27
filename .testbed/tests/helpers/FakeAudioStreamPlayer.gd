@@ -6,6 +6,7 @@ var stream: Resource = null
 var volume_db: float = 0.0
 var stream_paused: bool = false
 var autoplay: bool = false
+var loop: bool = false
 var _position: float = 0.0
 var _playing: bool = false
 

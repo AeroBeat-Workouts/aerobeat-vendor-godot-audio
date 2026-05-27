@@ -9,7 +9,7 @@ func test_public_repo_no_longer_exports_template_tool_manager_shape() -> void:
 		class_names.append(str(class_info.get("class", "")))
 	assert_false(class_names.has("AeroToolManager"), "Template AeroToolManager global class should be gone")
 	assert_true(class_names.has("AeroAudioPlaybackManager"), "Audio playback manager should be exported instead")
-	assert_eq(AeroAudioPlaybackManager.VERSION, "0.2.0", "Audio manager version should reflect the real implementation slice")
+	assert_eq(AeroAudioPlaybackManager.VERSION, "0.3.0", "Audio manager version should reflect the real implementation slice")
 
 func test_operation_callbacks_can_settle_immediately_and_late_subscribers_still_fire() -> void:
 	var operation: AeroAudioOperation = OPERATION_SCRIPT.new()
