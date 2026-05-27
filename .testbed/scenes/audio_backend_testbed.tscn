@@ -1,0 +1,141 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/audio_backend_testbed.gd" id="1_script"]
+
+[node name="AudioBackendTestbed" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = "AeroGodotAudioBackend proving surface"
+
+[node name="PathLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "res://assets/audio/test-tone.ogg"
+
+[node name="StatusLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "State: idle"
+
+[node name="DetailLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Position: 0.0 / 0.0 | Volume: 0.0 dB"
+
+[node name="ResultLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pick a file or load a sample."
+
+[node name="PlayerHost" type="Node" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+
+[node name="SelectRow" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ChooseFileButton" type="Button" parent="MarginContainer/VBox/SelectRow"]
+layout_mode = 2
+text = "Choose file…"
+
+[node name="UseSampleOggButton" type="Button" parent="MarginContainer/VBox/SelectRow"]
+layout_mode = 2
+text = "Use sample OGG"
+
+[node name="UseSampleWavButton" type="Button" parent="MarginContainer/VBox/SelectRow"]
+layout_mode = 2
+text = "Use sample WAV"
+
+[node name="ControlsRow" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LoadButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+layout_mode = 2
+text = "Load"
+
+[node name="PlayButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+layout_mode = 2
+text = "Play"
+
+[node name="PauseButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+layout_mode = 2
+text = "Pause"
+
+[node name="ResumeButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+layout_mode = 2
+text = "Resume"
+
+[node name="StopButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+layout_mode = 2
+text = "Stop"
+
+[node name="UnloadButton" type="Button" parent="MarginContainer/VBox/ControlsRow"]
+layout_mode = 2
+text = "Unload"
+
+[node name="SliderLabel" type="Label" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Seek 0.00s | Volume 0.0 dB"
+
+[node name="SeekSlider" type="HSlider" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="VolumeSlider" type="HSlider" parent="MarginContainer/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+min_value = -48.0
+max_value = 6.0
+step = 0.5
+value = 0.0
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Choose .ogg or .wav file"
+file_mode = 0
+access = 2
+use_native_dialog = true
+
+[connection signal="pressed" from="MarginContainer/VBox/SelectRow/ChooseFileButton" to="." method="_on_choose_file_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SelectRow/UseSampleOggButton" to="." method="_on_use_sample_ogg_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/SelectRow/UseSampleWavButton" to="." method="_on_use_sample_wav_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/PauseButton" to="." method="_on_pause_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/StopButton" to="." method="_on_stop_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBox/ControlsRow/UnloadButton" to="." method="_on_unload_button_pressed"]
+[connection signal="drag_started" from="MarginContainer/VBox/SeekSlider" to="." method="_on_seek_slider_drag_started"]
+[connection signal="drag_ended" from="MarginContainer/VBox/SeekSlider" to="." method="_on_seek_slider_drag_ended"]
+[connection signal="value_changed" from="MarginContainer/VBox/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
