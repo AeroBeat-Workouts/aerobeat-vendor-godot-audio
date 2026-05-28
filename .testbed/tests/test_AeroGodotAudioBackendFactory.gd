@@ -107,6 +107,23 @@ func test_backend_loop_updates_state_and_finished_signal_restarts_playback() -> 
 	assert_eq(str(_backend.get_state().get("vendor_state", "")), AeroGodotAudioBackend.STATE_PLAYING, "Loop-enabled playback should restart instead of ending ready")
 	assert_true(bool(_backend.get_state().get("loop", false)), "Backend state should expose loop status")
 
+func test_backend_expands_zero_length_wav_loop_window_when_loop_gets_enabled_after_load() -> void:
+	var surface := Node.new()
+	surface.name = "WavLoopSurface"
+	add_child_autofree(surface)
+	_backend.attach_surface(surface)
+	assert_true(bool(_backend.load({"path": SAMPLE_WAV_PATH, "loop": false}).get("success", false)), "Backend should load the packaged WAV sample before the UI-style loop toggle")
+
+	var wav_stream := _backend._stream_resource as AudioStreamWAV
+	assert_true(wav_stream != null, "WAV fixture should load into an AudioStreamWAV resource")
+	assert_eq(int(wav_stream.loop_begin), 0, "Regression fixture should begin with the imported loop start")
+	assert_eq(int(wav_stream.loop_end), 0, "Regression fixture should begin with the zero-length imported loop end")
+
+	assert_true(bool(_backend.set_loop(true).get("success", false)), "Enabling loop after load should succeed for WAV streams")
+	assert_eq(int(wav_stream.loop_mode), AeroGodotAudioBackend.STREAM_LOOP_MODE_FORWARD, "WAV loop toggle should switch the stream into forward loop mode")
+	assert_gt(int(wav_stream.loop_end), int(wav_stream.loop_begin), "WAV loop toggle should expand the loop end beyond the loop start so playback can advance")
+	assert_eq(int(wav_stream.loop_end), int(ceili(wav_stream.get_length() * float(wav_stream.mix_rate))), "WAV loop toggle should map an open-ended import to the stream's full duration in sample frames")
+
 func test_manager_path_supports_load_unload_play_pause_resume_stop_volume_seek_and_loop_with_callbacks() -> void:
 	var surface := Node.new()
 	surface.name = "ManagedSurface"

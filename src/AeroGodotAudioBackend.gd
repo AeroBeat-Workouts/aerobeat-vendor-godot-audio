@@ -412,8 +412,16 @@ func _sync_stream_loop_configuration() -> void:
 		_stream_resource.set("loop", _loop_enabled)
 	if _object_supports_property(_stream_resource, "loop_mode"):
 		_stream_resource.set("loop_mode", STREAM_LOOP_MODE_FORWARD if _loop_enabled else STREAM_LOOP_MODE_DISABLED)
-	if _object_supports_property(_stream_resource, "loop_end") and _loop_enabled and int(_stream_resource.get("loop_end")) < 0 and _duration_seconds > 0.0:
-		_stream_resource.set("loop_end", int(ceili(_duration_seconds)))
+	if _stream_resource is AudioStreamWAV and _loop_enabled:
+		var loop_begin := int(_stream_resource.get("loop_begin")) if _object_supports_property(_stream_resource, "loop_begin") else 0
+		var loop_end := int(_stream_resource.get("loop_end")) if _object_supports_property(_stream_resource, "loop_end") else 0
+		if loop_end <= loop_begin:
+			_stream_resource.set("loop_end", _resolve_wav_loop_end_frame(loop_begin))
+
+func _resolve_wav_loop_end_frame(loop_begin: int) -> int:
+	var mix_rate := int(_stream_resource.get("mix_rate")) if _object_supports_property(_stream_resource, "mix_rate") else 0
+	var estimated_frame := int(ceili(maxf(0.0, _duration_seconds) * float(mix_rate)))
+	return maxi(loop_begin + 1, estimated_frame)
 
 func _connect_finished_signal() -> void:
 	if _player == null or _finished_connected:
