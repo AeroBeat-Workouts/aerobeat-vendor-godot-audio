@@ -1,6 +1,6 @@
 extends Control
 
-const FACTORY_SCRIPT := preload("res://src/AeroGodotAudioBackendFactory.gd")
+const FACTORY_SCRIPT := preload("res://addons/aerobeat-vendor-godot-audio/src/AeroGodotAudioBackendFactory.gd")
 const SAMPLE_OGG_PATH := "res://assets/audio/test-tone.ogg"
 const SAMPLE_WAV_PATH := "res://assets/audio/test-tone.wav"
 const SLOT_LEFT := "left"

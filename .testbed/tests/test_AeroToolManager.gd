@@ -1,7 +1,7 @@
 extends GutTest
 
-const MANAGER_SCRIPT := preload("res://src/AeroAudioPlaybackManager.gd")
-const OPERATION_SCRIPT := preload("res://src/AeroAudioOperation.gd")
+const MANAGER_SCRIPT := preload("res://addons/aerobeat-vendor-godot-audio/src/AeroAudioPlaybackManager.gd")
+const OPERATION_SCRIPT := preload("res://addons/aerobeat-vendor-godot-audio/src/AeroAudioOperation.gd")
 
 func test_public_repo_no_longer_exports_template_tool_manager_shape() -> void:
 	var class_names: Array[String] = []

@@ -1,6 +1,12 @@
 {
   "$schema": "https://chickensoft.games/schemas/addons.schema.json",
   "addons": {
+    // Install this repo into the hidden workbench the same way a consumer does.
+    "aerobeat-vendor-godot-audio": {
+      "url": "..",
+      "source": "symlink",
+      "subfolder": "/"
+    },
     // Tool-template bootstrap pins the shared tool/workflow contract.
     // `main` is intentional until aerobeat-tool-core starts tagging releases.
     "aerobeat-tool-core": {
