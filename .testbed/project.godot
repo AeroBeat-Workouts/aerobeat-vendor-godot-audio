@@ -14,6 +14,11 @@ config/name="AeroBeat Tool Testbed"
 run/main_scene="res://scenes/audio_backend_testbed.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[autoload]
+
+AeroHeadlessManager="*res://addons/aerobeat-tool-headless-manager/src/AeroHeadlessManager.gd"
+
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/aerobeat-vendor-godot-unit-test/plugin.cfg")
